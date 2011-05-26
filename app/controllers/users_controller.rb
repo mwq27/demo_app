@@ -1,3 +1,4 @@
+
 class UsersController < ApplicationController
   def new
     @title = "Sign up"
@@ -11,6 +12,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     if @user.save
+      sign_in @user
       flash[:success] = "Welcome to your new profile"
       redirect_to @user  #redirects to the user_path
     else
