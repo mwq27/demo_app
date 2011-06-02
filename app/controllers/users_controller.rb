@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-before_filter :authenticate, :only => [:index, :edit, :update] # so users cant edit info while not signed in
+before_filter :authenticate, :except => [:show, :new, :create] # so users cant edit info while not signed in
 before_filter :correct_user, :only => [:edit, :update]
 before_filter :admin_user,    :only => :destroy
   def new
@@ -22,6 +22,20 @@ before_filter :admin_user,    :only => :destroy
       @title = "Sign up"
       render 'new'
     end
+  end
+  
+  def following
+    @title = "Following"
+    @user = User.find(params[:id])
+    @users = @user.following.paginate(:page => params[:page])
+    render 'show_follow'
+  end
+  
+  def followers
+    @title = "Followers"
+    @user = User.find(paras[:id])
+    @users = @user.followers.paginate(:page => params[:page])
+    render 'show_follow'
   end
   
   def edit
